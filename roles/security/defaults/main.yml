@@ -1,0 +1,18 @@
+---
+security_ssh_port: 22
+security_ssh_permit_root: "prohibit-password"
+security_ssh_max_auth_tries: 5
+security_ssh_permit_empty_passwords: "no"
+
+security_ufw_default_incoming: "deny"
+security_ufw_default_outgoing: "allow"
+security_ufw_allowed_ports:
+  - { port: "{{ security_ssh_port }}", proto: "tcp", comment: "SSH" }
+  - { port: 80, proto: "tcp", comment: "HTTP" }
+  - { port: 443, proto: "tcp", comment: "HTTPS" }
+security_ufw_allowed_interfaces:
+  - "tailscale0"
+
+security_fail2ban_bantime: "1h"
+security_fail2ban_findtime: "10m"
+security_fail2ban_maxretry: 5

@@ -1,0 +1,8 @@
+# Managed by Ansible - do not edit directly
+Port {{ security_ssh_port }}
+PermitRootLogin {{ security_ssh_permit_root }}
+PermitEmptyPasswords {{ security_ssh_permit_empty_passwords }}
+MaxAuthTries {{ security_ssh_max_auth_tries }}
+X11Forwarding no
+ClientAliveInterval 300
+ClientAliveCountMax 2
