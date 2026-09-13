@@ -12,6 +12,5 @@ common_packages:
   - unzip
   - ca-certificates
   - gnupg
-  - software-properties-common
   - rsync
   - tree
