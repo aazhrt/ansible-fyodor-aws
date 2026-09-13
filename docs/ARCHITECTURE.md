@@ -44,8 +44,8 @@ graph TD
         GV_SERVERS["group_vars/servers.yml\n(sysctl_settings, journald)"]
         HV_VARS["host_vars/server-prod/vars.yml\n(Secret Indirection Layer)"]
         HV_VAULT["host_vars/server-prod/vault.yml\n(AES-256 Encrypted Secrets)"]
-        HV_EX["host_vars/server-prod/vault.example.yml\n(Plaintext Schema Reference)"]
-        VAULT_TOOL["scripts/vault-manage.sh\n(init | edit | view)"]
+        HV_EX["host_vars/server-prod/vault.yml.example\n(Plaintext Schema Reference)"]
+        VAULT_TOOL["scripts/vault-manage.sh\n(init | edit | view | decrypt)"]
         VAULT_TOOL -.-> HV_VAULT
         HV_VARS --> HV_VAULT
     end
@@ -302,7 +302,7 @@ The repository adheres to strict zero-trust credential segregation to ensure tha
 +-----------------------------------------------------------------------------------+
 | Version Controlled in Git                                                         |
 |                                                                                   |
-|  [vault.example.yml]                                                              |
+|  [vault.yml.example]                                                              |
 |  # Plaintext schema & mock keys:                                                  |
 |  vault_mysql_root_password: "ReplaceWithActualMySQLRootPassword"                  |
 |  vault_cloudflared_token: "ReplaceWithCloudflareTunnelToken"                      |
@@ -338,7 +338,7 @@ The `.gitignore` strictly protects sensitive material:
 __pycache__/
 *.pyc
 inventories/production/host_vars/*/vault.yml
-!inventories/production/host_vars/*/vault.example.yml
+!inventories/production/host_vars/*/vault.yml.example
 ```
 
 ### 4.3 Vault Management Workflow (`scripts/vault-manage.sh`)
@@ -354,6 +354,9 @@ The repository includes a dedicated helper script for secrets lifecycle manageme
 
 # View decrypted contents in terminal:
 ./scripts/vault-manage.sh view
+
+# Decrypt vault file in-place:
+./scripts/vault-manage.sh decrypt
 ```
 
 ### 4.4 Defense-in-Depth Host Protection
@@ -440,7 +443,7 @@ When performing architectural audits or refactoring tasks, evaluate the codebase
 | **Modularity** | Tasks duplicated across multiple roles (e.g. installing `curl` or Docker in both `monitoring` and `docker`). | Extract common prerequisites into `roles/common` or define reusable task includes. |
 | **Hardcoding** | Raw IP addresses, hardcoded paths, or port numbers inside `tasks/main.yml`. | Move all configurable values into `defaults/main.yml` with sensible fallbacks. |
 | **Idempotence** | Using `ansible.builtin.command` or `shell` without `changed_when`, `failed_when`, or `creates`. | Always specify `changed_when` or migrate to native declarative Ansible modules. |
-| **Secrets Leakage** | Plaintext credentials, auth tokens, or private keys committed in playbooks or variable files. | Move secret keys to `host_vars/<host>/vault.yml` prefixed with `vault_`, add placeholder to `vault.example.yml`, and reference via `vars.yml`. |
+| **Secrets Leakage** | Plaintext credentials, auth tokens, or private keys committed in playbooks or variable files. | Move secret keys to `host_vars/<host>/vault.yml` prefixed with `vault_`, add placeholder to `vault.yml.example`, and reference via `vars.yml`. |
 | **Privilege Scope** | Applying `become: true` at individual task level when the entire playbook runs as root, or vice-versa. | Define privilege escalation cleanly in `ansible.cfg` or at the play level. |
 
 #### 2. Safe Refactoring Workflow

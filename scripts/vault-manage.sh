@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VAULT_FILE="$SCRIPT_DIR/inventories/production/host_vars/server-prod/vault.yml"
-EXAMPLE_FILE="$SCRIPT_DIR/inventories/production/host_vars/server-prod/vault.example.yml"
+EXAMPLE_FILE="$SCRIPT_DIR/inventories/production/host_vars/server-prod/vault.yml.example"
 
 case "${1:-}" in
   init)
@@ -11,7 +11,7 @@ case "${1:-}" in
       echo "vault.yml already exists."
     else
       cp "$EXAMPLE_FILE" "$VAULT_FILE"
-      echo "Created vault.yml from vault.example.yml. Now encrypting..."
+      echo "Created vault.yml from vault.yml.example. Now encrypting..."
       ansible-vault encrypt "$VAULT_FILE"
     fi
     ;;
@@ -21,8 +21,11 @@ case "${1:-}" in
   view)
     ansible-vault view "$VAULT_FILE"
     ;;
+  decrypt)
+    ansible-vault decrypt "$VAULT_FILE"
+    ;;
   *)
-    echo "Usage: $0 {init|edit|view}"
+    echo "Usage: $0 {init|edit|view|decrypt}"
     exit 1
     ;;
 esac

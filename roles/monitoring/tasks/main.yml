@@ -10,12 +10,16 @@
     chdir: "{{ monitoring_dir }}"
   when: mon_dir_stat.stat.exists
   register: mon_compose_run
-  changed_when: "'Started' in mon_compose_run.stdout or 'Created' in mon_compose_run.stdout or 'Recreated' in mon_compose_run.stdout"
+  changed_when: >-
+    'Started' in (mon_compose_run.stdout ~ mon_compose_run.stderr) or
+    'Created' in (mon_compose_run.stdout ~ mon_compose_run.stderr) or
+    'Recreated' in (mon_compose_run.stdout ~ mon_compose_run.stderr)
 
 - name: Verify monitoring endpoints are reachable
   ansible.builtin.uri:
     url: "http://127.0.0.1:{{ monitoring_grafana_port }}/api/health"
     status_code: 200
+  when: mon_dir_stat.stat.exists
   register: grafana_health
   retries: 3
   delay: 5

@@ -5,4 +5,4 @@
 __pycache__/
 *.pyc
 inventories/production/host_vars/*/vault.yml
-!inventories/production/host_vars/*/vault.example.yml
+!inventories/production/host_vars/*/vault.yml.example

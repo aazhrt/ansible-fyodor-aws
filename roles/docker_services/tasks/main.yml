@@ -12,7 +12,10 @@
   loop: "{{ stack_stats.results }}"
   when: item.stat.exists
   register: compose_run
-  changed_when: "'Started' in compose_run.stdout or 'Created' in compose_run.stdout or 'Recreated' in compose_run.stdout"
+  changed_when: >-
+    'Started' in (compose_run.stdout ~ compose_run.stderr) or
+    'Created' in (compose_run.stdout ~ compose_run.stderr) or
+    'Recreated' in (compose_run.stdout ~ compose_run.stderr)
 
 - name: Verify health of core containers
   ansible.builtin.command:

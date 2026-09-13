@@ -20,7 +20,7 @@ The server currently runs several active workloads:
 ### Primary Goals
 1. **Best-Practice Modularity**: Decouple infrastructure components into isolated, reusable Ansible roles (`common`, `security`, `docker`, `docker_services`, `monitoring`).
 2. **Zero-Downtime & Non-Destructive Adoption**: Ensure existing persistent volumes and running containers are adopted without downtime, data loss, or unnecessary restarts.
-3. **Enterprise Secrets Security**: Encrypt all sensitive tokens and passwords using AES-256 via Ansible Vault, with a committed plaintext `vault.example.yml` reference.
+3. **Enterprise Secrets Security**: Encrypt all sensitive tokens and passwords using AES-256 via Ansible Vault, with a committed plaintext `vault.yml.example` reference.
 4. **Dual Execution Model (Hybrid)**: Support both direct local execution on the host (`--connection=local`) and remote control via SSH from administrative workstations or CI/CD pipelines.
 5. **Architectural Transparency**: Structure the codebase so that tools and AI agents can map, audit, and refactor roles effortlessly (addressing `/zoom-out` mapping and architecture analysis).
 
@@ -49,7 +49,7 @@ The repository will be structured under `/home/admin/ansible-infra` following of
 │   │       └── server-prod/
 │   │           ├── vars.yml
 │   │           ├── vault.yml
-│   │           └── vault.example.yml
+│   │           └── vault.yml.example
 │   └── staging/
 │       └── hosts.yml
 ├── playbooks/
@@ -125,7 +125,7 @@ all:
   syncthing_gui_password: "{{ vault_syncthing_gui_password }}"
   ```
 - **`host_vars/server-prod/vault.yml`**: Encrypted with AES-256 storing raw secret strings prefixed with `vault_`.
-- **`host_vars/server-prod/vault.example.yml`**: Plaintext dummy template for version control tracking.
+- **`host_vars/server-prod/vault.yml.example`**: Plaintext dummy template for version control tracking.
 
 ---
 
