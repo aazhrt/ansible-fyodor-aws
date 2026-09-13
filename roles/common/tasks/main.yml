@@ -3,11 +3,6 @@
   community.general.timezone:
     name: "{{ common_timezone }}"
 
-- name: Ensure locale is generated
-  ansible.builtin.locale_gen:
-    name: "{{ common_locale }}"
-    state: present
-
 - name: Update apt cache and install baseline packages
   ansible.builtin.apt:
     name: "{{ common_packages_list }}"
@@ -15,12 +10,18 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: Ensure locale is generated
+  ansible.builtin.locale_gen:
+    name: "{{ common_locale }}"
+    state: present
+
 - name: Configure sysctl kernel parameters
   ansible.builtin.sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/99-server.conf
     state: present
-    reload: true
+    reload: false
     sysctl_set: true
   loop: "{{ common_sysctl | dict2items }}"
   notify: Reload sysctl

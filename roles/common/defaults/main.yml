@@ -1,6 +1,6 @@
 ---
 common_timezone: "{{ timezone | default('Asia/Jakarta') }}"
 common_locale: "{{ system_locale | default('en_US.UTF-8') }}"
-common_packages_list: "{{ common_packages }}"
-common_sysctl: "{{ sysctl_settings }}"
+common_packages_list: "{{ ['locales'] | union(common_packages | default([])) }}"
+common_sysctl: "{{ sysctl_settings | default({}) }}"
 common_journald_limit: "{{ journald_max_use | default('500M') }}"
