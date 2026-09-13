@@ -1,0 +1,9 @@
+---
+- name: "Targeted Container Stacks & Monitoring Run"
+  hosts: all
+  become: true
+  roles:
+    - role: docker_services
+      tags: [docker_services, services]
+    - role: monitoring
+      tags: [monitoring]

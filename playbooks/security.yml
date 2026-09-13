@@ -1,0 +1,7 @@
+---
+- name: "Targeted Security & Firewall Update"
+  hosts: all
+  become: true
+  roles:
+    - role: security
+      tags: [security]

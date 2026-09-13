@@ -1,0 +1,9 @@
+---
+- name: "Bootstrap Node Prerequisites"
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure python3 and sudo are installed
+      ansible.builtin.raw: apt-get update && apt-get install -y python3 sudo python3-apt
+      changed_when: false

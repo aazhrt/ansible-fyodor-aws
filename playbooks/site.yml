@@ -1,0 +1,22 @@
+---
+- name: "Infrastructure Master Orchestration: Base System & Security"
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+      tags: [common, base]
+    - role: security
+      tags: [security]
+
+- name: "Infrastructure Master Orchestration: Docker Runtime & Stacks"
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: docker
+      tags: [docker]
+    - role: docker_services
+      tags: [docker_services, services]
+    - role: monitoring
+      tags: [monitoring]
