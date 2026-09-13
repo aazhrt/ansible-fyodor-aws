@@ -1,0 +1,7 @@
+---
+# Rename or copy this file to vault.yml and encrypt using:
+# ansible-vault encrypt inventories/production/host_vars/server-prod/vault.yml
+vault_mysql_root_password: "ReplaceWithActualMySQLRootPassword"
+vault_cloudflared_token: "ReplaceWithCloudflareTunnelToken"
+vault_grafana_admin_password: "ReplaceWithGrafanaAdminPassword"
+vault_syncthing_gui_password: "ReplaceWithSyncthingPassword"

@@ -1,0 +1,5 @@
+---
+mysql_root_password: "{{ vault_mysql_root_password | default('CHANGE_ME_IN_VAULT') }}"
+cloudflared_token: "{{ vault_cloudflared_token | default('') }}"
+grafana_admin_password: "{{ vault_grafana_admin_password | default('admin') }}"
+syncthing_gui_password: "{{ vault_syncthing_gui_password | default('') }}"

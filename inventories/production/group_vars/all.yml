@@ -1,0 +1,17 @@
+---
+timezone: "Asia/Jakarta"
+system_locale: "en_US.UTF-8"
+admin_users:
+  - admin
+  - sysadmin
+common_packages:
+  - curl
+  - git
+  - htop
+  - jq
+  - unzip
+  - ca-certificates
+  - gnupg
+  - software-properties-common
+  - rsync
+  - tree
