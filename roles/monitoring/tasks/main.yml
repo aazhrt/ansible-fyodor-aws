@@ -1,0 +1,23 @@
+---
+- name: Check if monitoring directory exists
+  ansible.builtin.stat:
+    path: "{{ monitoring_dir }}"
+  register: mon_dir_stat
+
+- name: Ensure monitoring compose stack is running
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "{{ monitoring_dir }}"
+  when: mon_dir_stat.stat.exists
+  register: mon_compose_run
+  changed_when: "'Started' in mon_compose_run.stdout or 'Created' in mon_compose_run.stdout or 'Recreated' in mon_compose_run.stdout"
+
+- name: Verify monitoring endpoints are reachable
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ monitoring_grafana_port }}/api/health"
+    status_code: 200
+  register: grafana_health
+  retries: 3
+  delay: 5
+  until: grafana_health.status == 200
+  ignore_errors: true

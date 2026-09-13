@@ -1,0 +1,4 @@
+---
+monitoring_dir: "/opt/infra/monitoring"
+monitoring_grafana_port: 3006
+monitoring_loki_port: 3100
