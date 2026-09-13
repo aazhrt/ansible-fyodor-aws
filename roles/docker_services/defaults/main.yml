@@ -1,0 +1,15 @@
+---
+docker_services_base_dir: "/srv/docker"
+docker_services_stacks:
+  - name: "nginx"
+    dir: "{{ docker_services_base_dir }}/nginx"
+  - name: "mysql"
+    dir: "{{ docker_services_base_dir }}/mysql"
+  - name: "cloudflared"
+    dir: "{{ docker_services_base_dir }}/cloudflared"
+  - name: "phpmyadmin"
+    dir: "{{ docker_services_base_dir }}/phpmyadmin"
+  - name: "portainer"
+    dir: "{{ docker_services_base_dir }}/portainer"
+  - name: "syncthing"
+    dir: "{{ docker_services_base_dir }}/syncthing"

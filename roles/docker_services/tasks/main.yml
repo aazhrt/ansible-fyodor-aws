@@ -1,0 +1,26 @@
+---
+- name: Verify existing compose directories exist in /srv/docker
+  ansible.builtin.stat:
+    path: "{{ item.dir }}"
+  loop: "{{ docker_services_stacks }}"
+  register: stack_stats
+
+- name: Ensure stack compose files are running (non-destructive)
+  ansible.builtin.command:
+    cmd: docker compose up -d --remove-orphans
+    chdir: "{{ item.item.dir }}"
+  loop: "{{ stack_stats.results }}"
+  when: item.stat.exists
+  register: compose_run
+  changed_when: "'Started' in compose_run.stdout or 'Created' in compose_run.stdout or 'Recreated' in compose_run.stdout"
+
+- name: Verify health of core containers
+  ansible.builtin.command:
+    cmd: >-
+      docker ps --format "{{ '{{' }}.Names{{ '}}' }}: {{ '{{' }}.Status{{ '}}' }}"
+  register: active_containers
+  changed_when: false
+
+- name: Display status of core services
+  ansible.builtin.debug:
+    var: active_containers.stdout_lines

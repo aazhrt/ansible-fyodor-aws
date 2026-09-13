@@ -1,0 +1,6 @@
+---
+- name: Reload global-nginx
+  ansible.builtin.command:
+    cmd: docker exec global-nginx nginx -s reload
+  failed_when: false
+  changed_when: true
